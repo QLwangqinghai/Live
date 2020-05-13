@@ -19,6 +19,11 @@
 		77C7F5B6246C40F900B7EC3C /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C7F5B5246C40F900B7EC3C /* libc++.tbd */; };
 		77C7F5B8246C410D00B7EC3C /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C7F5B7246C410D00B7EC3C /* libresolv.tbd */; };
 		77C7F5BC246C412000B7EC3C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C7F5BB246C412000B7EC3C /* SystemConfiguration.framework */; };
+		77C7F5BE246C479A00B7EC3C /* RtmKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C7F5BD246C479A00B7EC3C /* RtmKit.swift */; };
+		77C7F5BF246C47C500B7EC3C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C7F5BB246C412000B7EC3C /* SystemConfiguration.framework */; };
+		77C7F5C0246C47CB00B7EC3C /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C7F5B5246C40F900B7EC3C /* libc++.tbd */; };
+		77C7F5C1246C47DA00B7EC3C /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C7F5B3246C40EC00B7EC3C /* CoreTelephony.framework */; };
+		77C7F5C2246C47DF00B7EC3C /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C7F5B7246C410D00B7EC3C /* libresolv.tbd */; };
 		D6CE09A3246C01DB008854F8 /* RtmKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D6CE09A1246C01DB008854F8 /* RtmKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -53,6 +58,7 @@
 		77C7F5B7246C410D00B7EC3C /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		77C7F5B9246C411700B7EC3C /* libsystemstats.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsystemstats.tbd; path = usr/lib/libsystemstats.tbd; sourceTree = SDKROOT; };
 		77C7F5BB246C412000B7EC3C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		77C7F5BD246C479A00B7EC3C /* RtmKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmKit.swift; sourceTree = "<group>"; };
 		D6CE099E246C01DB008854F8 /* RtmKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RtmKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6CE09A1246C01DB008854F8 /* RtmKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtmKit.h; sourceTree = "<group>"; };
 		D6CE09A2246C01DB008854F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -75,6 +81,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77C7F5C2246C47DF00B7EC3C /* libresolv.tbd in Frameworks */,
+				77C7F5C1246C47DA00B7EC3C /* CoreTelephony.framework in Frameworks */,
+				77C7F5C0246C47CB00B7EC3C /* libc++.tbd in Frameworks */,
+				77C7F5BF246C47C500B7EC3C /* SystemConfiguration.framework in Frameworks */,
 				77C7F592246C3E7100B7EC3C /* AgoraRtmKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,6 +146,7 @@
 				77C7F591246C3E7100B7EC3C /* AgoraRtmKit.framework */,
 				D6CE09A1246C01DB008854F8 /* RtmKit.h */,
 				D6CE09A2246C01DB008854F8 /* Info.plist */,
+				77C7F5BD246C479A00B7EC3C /* RtmKit.swift */,
 			);
 			path = RtmKit;
 			sourceTree = "<group>";
@@ -204,6 +215,7 @@
 					};
 					D6CE099D246C01DB008854F8 = {
 						CreatedOnToolsVersion = 11.4.1;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -261,6 +273,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77C7F5BE246C479A00B7EC3C /* RtmKit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +464,7 @@
 		D6CE09A7246C01DB008854F8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -467,6 +481,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.haoqi.RtmKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -475,6 +490,7 @@
 		D6CE09A8246C01DB008854F8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
