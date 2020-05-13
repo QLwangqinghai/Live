@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		77C7F5C4246C496B00B7EC3C /* IMSessionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C7F5C3246C496B00B7EC3C /* IMSessionListViewController.swift */; };
 		D6CE09FD246C11C5008854F8 /* CTImKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D6CE09FB246C11C5008854F8 /* CTImKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6CE0A1F246C287C008854F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CE0A1E246C287C008854F8 /* AppDelegate.swift */; };
 		D6CE0A21246C287C008854F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CE0A20246C287C008854F8 /* SceneDelegate.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		77C7F5C3246C496B00B7EC3C /* IMSessionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMSessionListViewController.swift; sourceTree = "<group>"; };
 		D6CE09F8246C11C5008854F8 /* CTImKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CTImKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6CE09FB246C11C5008854F8 /* CTImKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTImKit.h; sourceTree = "<group>"; };
 		D6CE09FC246C11C5008854F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 			children = (
 				D6CE09FB246C11C5008854F8 /* CTImKit.h */,
 				D6CE09FC246C11C5008854F8 /* Info.plist */,
+				77C7F5C3246C496B00B7EC3C /* IMSessionListViewController.swift */,
 			);
 			path = CTImKit;
 			sourceTree = "<group>";
@@ -150,6 +153,7 @@
 				TargetAttributes = {
 					D6CE09F7246C11C5008854F8 = {
 						CreatedOnToolsVersion = 11.4.1;
+						LastSwiftMigration = 1000;
 					};
 					D6CE0A1B246C287C008854F8 = {
 						CreatedOnToolsVersion = 11.4.1;
@@ -200,6 +204,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77C7F5C4246C496B00B7EC3C /* IMSessionListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,6 +363,7 @@
 		D6CE0A01246C11C5008854F8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -373,6 +379,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.haoqi.CTImKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -381,6 +388,7 @@
 		D6CE0A02246C11C5008854F8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
