@@ -19,6 +19,7 @@
 		D65358D8246F8E1D00FE4BF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D65358D6246F8E1D00FE4BF3 /* Main.storyboard */; };
 		D65358DA246F8E2000FE4BF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D65358D9246F8E2000FE4BF3 /* Assets.xcassets */; };
 		D65358DD246F8E2000FE4BF3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D65358DB246F8E2000FE4BF3 /* LaunchScreen.storyboard */; };
+		D65358E32472597000FE4BF3 /* AssetsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65358E22472597000FE4BF3 /* AssetsManager.swift */; };
 		D6CE09A3246C01DB008854F8 /* RtmKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D6CE09A1246C01DB008854F8 /* RtmKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -38,6 +39,7 @@
 		D65358D9246F8E2000FE4BF3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D65358DC246F8E2000FE4BF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D65358DE246F8E2000FE4BF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D65358E22472597000FE4BF3 /* AssetsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsManager.swift; sourceTree = "<group>"; };
 		D6CE099E246C01DB008854F8 /* RtmKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RtmKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6CE09A1246C01DB008854F8 /* RtmKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RtmKit.h; sourceTree = "<group>"; };
 		D6CE09A2246C01DB008854F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				D6CE09A1246C01DB008854F8 /* RtmKit.h */,
 				D6CE09A2246C01DB008854F8 /* Info.plist */,
 				77C7F5BD246C479A00B7EC3C /* RtmKit.swift */,
+				D65358E22472597000FE4BF3 /* AssetsManager.swift */,
 			);
 			path = RtmKit;
 			sourceTree = "<group>";
@@ -244,6 +247,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D65358E32472597000FE4BF3 /* AssetsManager.swift in Sources */,
 				77C7F5BE246C479A00B7EC3C /* RtmKit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

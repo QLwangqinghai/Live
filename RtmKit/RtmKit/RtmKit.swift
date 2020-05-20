@@ -16,8 +16,9 @@ public final class RtmKit: NSObject, AgoraRtmDelegate {
         case loginTimeout
         case bannedByServer
         case remoteLogin
+        case other
     }
-        
+    
     public enum ConnectState {
         case connecting
         case connected
@@ -59,13 +60,67 @@ public final class RtmKit: NSObject, AgoraRtmDelegate {
     }
     public func rtmKit(_ kit: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
         assert(kit == self.api, "")
-        guard let s = ConnectState(rawValue: UInt(state.rawValue)) else {
-            fatalError("")
+        
+        func mapReason(_ reason: AgoraRtmConnectionChangeReason) -> DisconnectedReason {
+            let r: DisconnectedReason
+            switch reason {
+            case .bannedByServer:
+                r = .bannedByServer
+                break;
+            case .interrupted:
+                r = .other
+                break;
+            case .login:
+                r = .other
+                break;
+            case .loginFailure:
+                r = .loginFailure
+                break;
+            case .loginSuccess:
+                r = .other
+                break;
+            case .loginTimeout:
+                r = .loginTimeout
+                break;
+            case .logout:
+                r = .notLogin
+                break;
+            case .remoteLogin:
+                r = .remoteLogin
+                break;
+            default:
+                r = .other
+                break;
+            }
+            return r
+        }
+        
+        let s: ConnectState
+        switch state {
+        case .disconnected:
+            s = .disconnected(mapReason(reason))
+            break;
+        case .aborted:
+            s = .disconnected(mapReason(reason))
+            break;
+        case .connected:
+            s = .connected
+            break;
+        case .connecting:
+            s = .connecting
+            break;
+        case .reconnecting:
+            s = .reconnecting
+            break;
+        default:
+            s = .disconnected(.other)
+            break;
         }
         self.state = s
     }
     public func rtmKitTokenDidExpire(_ kit: AgoraRtmKit) {
-        
+        assert(kit == self.api, "")
+
     }
     
     public final class Channel: NSObject, AgoraRtmChannelDelegate {
