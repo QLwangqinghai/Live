@@ -235,7 +235,12 @@ public final class RtmFileManager: NSObject {
      */
     
 
-    public typealias ProgressClosure = (Progress) -> Void
+    public struct FileProgress {
+        public var total: Int64
+        public var current: Int64
+    }
+    
+    public typealias ProgressClosure = (FileProgress) -> Void
     
     private var progressMap: [Int64:ProgressClosure] = [:]
 
