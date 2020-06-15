@@ -9,6 +9,105 @@
 import UIKit
 import AgoraRtmKit
 
+
+
+/*
+ id:16
+ module:4
+ type:4
+ */
+
+public class BaseMessage {
+    public let id: String
+    public let senderId: String
+    public let time: Int64
+    public let isOfflineMessage: Bool
+}
+
+public class Message: BaseMessage {
+    public let recerverId: String
+
+    public class Text {
+        public let text: String
+    }
+    
+    public class Image {
+        public let text: String
+    }
+    
+    public class File {
+        public let mediaId: String
+        public let hash: String
+    }
+    
+    public class Asset {
+        public let mediaId: String
+        public let hash: String
+    }
+    
+    public enum ContentType: UInt {
+        case text = 1
+        case raw
+        case file
+    }
+}
+
+public class ChannelMessage: BaseMessage {
+    public let channelId: String
+
+    public enum ContentType: UInt {
+        case text = 1
+        case raw
+        case file
+    }
+}
+
+
+public class F {
+    public let hash: String
+    public let fileSize: Int64
+    
+    
+    //jpg jpeg png gif wav mp3 mp4 m4a heif heic pdf zip ts
+    public let fileType: Bool
+}
+
+
+public class RtmMessage {
+    public let id: String
+    public let senderId: String
+    public let time: Int64
+    public let isOfflineMessage: Bool
+    public let isCannelMessage: Bool
+    
+    //isCannelMessage == true 时，recerverId 为channelId
+    public let recerverId: String
+
+    public let body: Data
+    public let name: String
+    public let mediaId: String
+}
+
+
+//public class RtmMessage {
+//    public enum MessageType: UInt {
+//        case text = 1
+//        case raw
+//        case file
+//    }
+//
+//    public let time: Int64
+//    public let text: String
+//    public let isOfflineMessage: Bool
+//
+//}
+
+
+public protocol RtmKitDelegate: class {
+
+}
+
+
 public final class RtmKit: NSObject, AgoraRtmDelegate {
     public enum DisconnectedReason {
         case notLogin
@@ -27,7 +126,7 @@ public final class RtmKit: NSObject, AgoraRtmDelegate {
     }
     
     private let api: AgoraRtmKit
-    public let fileManager: RtmFileManager
+    public let fileRequest: RtmFileRequest
     
     public dynamic private(set) var state: ConnectState {
         didSet(old) {
@@ -43,7 +142,7 @@ public final class RtmKit: NSObject, AgoraRtmDelegate {
         let api = AgoraRtmKit(appId: "f5d079b7a3eb43b28bd4b0914c96b624", delegate: nil)!
         self.api = api
         self.state = .disconnected(.notLogin)
-        self.fileManager = RtmFileManager(api: api)
+        self.fileRequest = RtmFileRequest(api: api)
         super.init()
         self.api.agoraRtmDelegate = self
     }
@@ -80,11 +179,23 @@ public final class RtmKit: NSObject, AgoraRtmDelegate {
     }
     public func rtmKit(_ kit: AgoraRtmKit, media requestId: Int64, uploadingProgress progress: AgoraRtmMediaOperationProgress) {
         assert(kit == self.api, "")
-
+        if Thread.isMainThread {
+            self.fileRequest.uploading(kit: kit, requestId: requestId, progress: progress)
+        } else {
+            DispatchQueue.main.async {
+                self.fileRequest.uploading(kit: kit, requestId: requestId, progress: progress)
+            }
+        }
     }
     public func rtmKit(_ kit: AgoraRtmKit, media requestId: Int64, downloadingProgress progress: AgoraRtmMediaOperationProgress) {
         assert(kit == self.api, "")
-
+        if Thread.isMainThread {
+            self.fileRequest.downloading(kit: kit, requestId: requestId, progress: progress)
+        } else {
+            DispatchQueue.main.async {
+                self.fileRequest.downloading(kit: kit, requestId: requestId, progress: progress)
+            }
+        }
     }
     public func rtmKit(_ kit: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
         assert(kit == self.api, "")
@@ -152,88 +263,22 @@ public final class RtmKit: NSObject, AgoraRtmDelegate {
     }
 }
 
-
-public final class RtmFile: NSObject {
-    public let digest: String
-    
-    public var type: Int?
-    public var width: Int?
-    public var height: Int?
-    public var duration: Double?
-    
-    public init(digest: String) {
-        self.digest = digest
-    }
-    
-//    public func create
+public class MessageManager {
     
     
-    /*
-     et://expiration time
-
-     file: {
-     hx: hash
-     tp: type
-     w:
-     h:
-     d: duration
-     }
-     */
 }
 
+public struct RtmError: Error {
+    public var code: Int
+    public var message: String
+}
 
-
-public final class RtmFileManager: NSObject {
-    
+public final class RtmFileRequest {
     private let api: AgoraRtmKit
     
     fileprivate init(api: AgoraRtmKit) {
         self.api = api
     }
-    
-//    public func create
-    
-    
-    //MARK: - call
-    
-//
-//    - (void)createFileMessageByUploading:(NSString * _Nonnull)filePath
-//                      withRequest: (long long*)requestId
-//                      completion:(AgoraRtmUploadFileMediaBlock _Nullable)completionBlock;
-//
-//    /**
-//     Gets an AgoraRtmImageMessage instance by uploading an image to the Agora server.
-//
-//     The SDK returns the result by the [AgoraRtmUploadImageMediaBlock](AgoraRtmUploadImageMediaBlock) callback. If success, this callback returns a corresponding AgoraRtmMessage instance, and then you can downcast it to AgoraRtmImageMessage according to its type.
-//
-//     - If the uploaded image is in JPEG, JPG, BMP, or PNG format, the SDK calculates the width and height of the image. You can get the calculated width and height from the received AgoraRtmImageMessage instance.
-//     - Otherwise, you need to set the width and height of the uploaded image within the received AgoraRtmImageMessage instance by yourself.
-//
-//     **NOTE**
-//
-//     - If you have at hand the media ID of an image on the Agora server, you can call [createImageMessageByMediaId]([AgoraRtmKit createImageMessageByMediaId:]) to create an AgoraRtmImageMessage instance.
-//     - To cancel an ongoing upload task, call [cancelMediaUpload]([AgoraRtmKit cancelMediaUpload:completion:]).
-//
-//     @param filePath The full path to the local image to upload. Must be in UTF-8.
-//     @param requestId The unique ID of the upload request.
-//     @param completionBlock [AgoraRtmUploadImageMediaBlock](AgoraRtmUploadImageMediaBlock) returns the result of this method call. See AgoraRtmUploadMediaErrorCode for the error codes.
-//     */
-//    - (void)createImageMessageByUploading:(NSString * _Nonnull)filePath
-//                      withRequest: (long long*)requestId
-//                      completion:(AgoraRtmUploadImageMediaBlock _Nullable)completionBlock;
-
-    /*
-     et://expiration time
-
-     att: {
-     hx: hash
-     tp: type
-     w:
-     h:
-     d: duration
-     }
-     */
-    
 
     public struct FileProgress {
         public var total: Int64
@@ -241,59 +286,127 @@ public final class RtmFileManager: NSObject {
     }
     
     public typealias ProgressClosure = (FileProgress) -> Void
-    
     private var progressMap: [Int64:ProgressClosure] = [:]
-
     
-    private func _upload(filePath: String, progress: ProgressClosure?, completion: @escaping (String) -> Void) {
+    private func _upload(filePath: String, progress: ProgressClosure?, queue: DispatchQueue, completion: @escaping (Result<String, RtmError>) -> Void) {
         var requestId: Int64 = 0
 
-        self.api.createFileMessage(byUploading: filePath, withRequest: &requestId) { (requestId, fileMessage, code) in
-            print("\(code)")
+        self.api.createFileMessage(byUploading: filePath, withRequest: &requestId) { (rid, fileMessage, code) in
+            let result: Result<String, RtmError>
+            if .ok == code {
+                if let message: AgoraRtmFileMessage = fileMessage {
+                    result = .success(message.mediaId)
+                } else {
+                    result = .failure(RtmError(code: code.rawValue, message: "未知错误"))
+                }
+            } else {
+                result = .failure(RtmError(code: code.rawValue, message: ""))
+            }
+            DispatchQueue.main.async {
+                self.progressMap.removeValue(forKey: rid)
+            }
+            queue.async {
+                completion(result)
+            }
+        }
+        if let p = progress {
+            self.progressMap[requestId] = p
         }
     }
-    public func upload(filePath: String, progress: ProgressClosure?, completion: @escaping (String) -> Void) {
+    public func upload(filePath: String, progress: ProgressClosure?, queue: DispatchQueue, completion: @escaping (Result<String, RtmError>) -> Void) {
         if Thread.isMainThread {
-            self._upload(filePath: filePath, progress: progress, completion: completion)
+            self._upload(filePath: filePath, progress: progress, queue: queue, completion: completion)
         } else {
             DispatchQueue.main.async {
-                self._upload(filePath: filePath, progress: progress, completion: completion)
+                self._upload(filePath: filePath, progress: progress, queue: queue, completion: completion)
+            }
+        }
+    }
+
+    private func _download(mediaId: String, progress: ProgressClosure?, queue: DispatchQueue, completion: @escaping (Result<Data, RtmError>) -> Void) {
+        var requestId: Int64 = 0
+        self.api.downloadMedia(toMemory: mediaId, withRequest: &requestId) { (rid, data, code) in
+            let result: Result<Data, RtmError>
+            if .ok == code {
+                if let v = data {
+                    result = .success(v)
+                } else {
+                    result = .success(Data())
+                }
+            } else {
+                result = .failure(RtmError(code: code.rawValue, message: ""))
+            }
+            DispatchQueue.main.async {
+                self.progressMap.removeValue(forKey: rid)
+            }
+            queue.async {
+                completion(result)
+            }
+        }
+        if let p = progress {
+            self.progressMap[requestId] = p
+        }
+    }
+    private func _download(mediaId: String, to filePath: String, progress: ProgressClosure?, queue: DispatchQueue, completion: @escaping (Result<String, RtmError>) -> Void) {
+        
+        var requestId: Int64 = 0
+        self.api.downloadMedia(mediaId, toFile: filePath, withRequest: &requestId) { (rid, code) in
+            let result: Result<String, RtmError>
+            if .ok == code {
+                result = .success(filePath)
+            } else {
+                result = .failure(RtmError(code: code.rawValue, message: ""))
+            }
+
+            DispatchQueue.main.async {
+                self.progressMap.removeValue(forKey: rid)
+            }
+            queue.async {
+                completion(result)
+            }
+        }
+        if let p = progress {
+            self.progressMap[requestId] = p
+        }
+    }
+    
+    public func download(mediaId: String, progress: ProgressClosure?, queue: DispatchQueue, completion: @escaping (Result<Data, RtmError>) -> Void) {
+        
+        if Thread.isMainThread {
+            self._download(mediaId: mediaId, progress: progress, queue:queue, completion: completion);
+        } else {
+            DispatchQueue.main.async {
+                self._download(mediaId: mediaId, progress: progress, queue:queue, completion: completion);
+            }
+        }
+    }
+    public func download(mediaId: String, to filePath: String, progress: ProgressClosure?, queue: DispatchQueue, completion: @escaping (Result<String, RtmError>) -> Void) {
+        if Thread.isMainThread {
+            self._download(mediaId: mediaId, to: filePath, progress: progress, queue:queue, completion: completion);
+        } else {
+            DispatchQueue.main.async {
+                self._download(mediaId: mediaId, to: filePath, progress: progress, queue:queue, completion: completion);
             }
         }
     }
     
-    public func download(mediaId: String, progress: ProgressClosure?, completion: @escaping (Data) -> Void) {
-        
-        
-    }
-    public func download(mediaId: String, to filePath: String, progress: ProgressClosure?, completion: @escaping (Data) -> Void) {
-                
-    }
-    
-    
     fileprivate func uploading(kit: AgoraRtmKit, requestId: Int64, progress: AgoraRtmMediaOperationProgress) {
         assert(kit == self.api, "")
-
+        guard let closure: ProgressClosure = self.progressMap[requestId] else {
+            return
+        }
+        let p = FileProgress(total: progress.totalSize, current: progress.currentSize)
+        closure(p)
     }
     fileprivate func downloading(kit: AgoraRtmKit, requestId: Int64, progress: AgoraRtmMediaOperationProgress) {
         assert(kit == self.api, "")
-
+        guard let closure: ProgressClosure = self.progressMap[requestId] else {
+            return
+        }
+        let p = FileProgress(total: progress.totalSize, current: progress.currentSize)
+        closure(p)
     }
-    
 }
-
-public final class RtmFileCache: NSObject {
-    private override init() {
-        super.init()
-    }
-
-    public func file(for identifier: String) -> RtmFile? {
-        return nil
-    }
-    
-    public static let shared: RtmFileCache = RtmFileCache()
-}
-
 
 
 public final class RtmChannel: NSObject, AgoraRtmChannelDelegate {

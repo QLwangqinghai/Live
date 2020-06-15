@@ -29,7 +29,15 @@ class ViewController: UIViewController {
         
         print("data.size \(data.count)")
         
-        self.rtmKit.fileManager.create(filePath: filePath)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
+            self.rtmKit.fileRequest.upload(filePath: filePath, progress: { (progress) in
+                print("progress:\(progress)")
+            }, queue: DispatchQueue.main, completion: { (result) in
+                print("result:\(result)")
+            })
+        }
+        
+
 
     }
 
